@@ -1,27 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div class="container">
+    <global-header :user="userData" />
+    <router-view></router-view>
+    <global-footer></global-footer>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+<script setup lang="ts">
+import "bootstrap/dist/css/bootstrap.min.css";
 
-export default defineComponent({
-  name: "App",
-  components: {
-    HelloWorld,
-  },
-});
+import GlobalHeader from "./components/GlobalHeader.vue";
+
+import GlobalFooter from "./components/GlobalFooter.vue";
+import { useStore } from "./store";
+import { computed } from "vue";
+
+const userData = computed(() => useStore().state.user);
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
