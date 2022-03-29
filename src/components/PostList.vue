@@ -1,13 +1,18 @@
 <template>
   <div class="post-list">
-    <article v-for="post in list" :key="post.id" class="card mb-3">
+    <article
+      v-for="post in list"
+      :key="post.id"
+      class="card mb-3"
+      @click.prevent="onClick(post.id)"
+    >
       <div class="card-body">
         <h4>{{ post.title }}</h4>
         <div class="row my-3 algin-items-center">
           <div v-if="post.image" class="col-3">
             <img :src="post.image" :alt="post.title" class="rounded-lg" />
           </div>
-          <p :class="{ 'col-9': post.image }">{{ post.content }}</p>
+          <p :class="{ 'col-9': post.image }">{{ post.excerpt }}</p>
         </div>
         <span class="text-muted">{{ post.createdAt }}</span>
       </div>
@@ -18,7 +23,20 @@
 <script setup lang="ts">
 import { PostProps } from "@/utils/props";
 import { defineProps, PropType } from "vue";
+import { useRouter } from "vue-router";
 defineProps({
   list: { type: Array as PropType<PostProps[]>, required: true },
 });
+
+const router = useRouter();
+const onClick = (id: number) => {
+  router.push(`/postDetail/${id}`);
+};
 </script>
+
+<style>
+.post-list img {
+  width: 200px;
+  height: 150px;
+}
+</style>

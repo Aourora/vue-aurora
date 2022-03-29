@@ -1,6 +1,6 @@
 import { onMounted, onUnmounted, ref, Ref } from "vue";
 
-const useClickOutside = (elementRef: Ref<null | HTMLElement>) => {
+function useClickOutside(elementRef: Ref<null | HTMLElement>): Ref<boolean> {
   const isClickOutside = ref(false);
 
   const handler = (e: MouseEvent) => {
@@ -20,6 +20,6 @@ const useClickOutside = (elementRef: Ref<null | HTMLElement>) => {
   });
 
   return isClickOutside;
-};
+}
 
 export default useClickOutside;

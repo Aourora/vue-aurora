@@ -21,10 +21,20 @@
 import { useRoute } from "vue-router";
 import PostList from "@/components/PostList.vue";
 import { useStore } from "@/store";
+import { computed, onMounted } from "vue";
+import { FETCH_COLUMNS_ACTION, FETCH_POSTS_ACTION } from "@/utils/constant";
 
 const store = useStore();
 
-const currentId = useRoute().params.id;
-const column = store.getters.getColumnById(+currentId);
-const list = store.getters.getPostByColummnId(column.id);
+const currentId = +useRoute().params.id;
+
+const column = computed(() => store.getters.getColumnById(currentId));
+const list = computed(() => store.getters.getPostsByColummnId(currentId));
+
+onMounted(() => {
+  if (!column.value) {
+    store.dispatch(FETCH_COLUMNS_ACTION);
+  }
+  store.dispatch(FETCH_POSTS_ACTION, currentId);
+});
 </script>

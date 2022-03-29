@@ -1,4 +1,5 @@
 import store from "@/store";
+import { FETCH_CURRENT_USER_ACTION } from "@/utils/constant";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
@@ -18,18 +19,27 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/register",
     name: "register",
-    component: () => import("@/views/RegisterPage.vue"),
+    component: () => import("@/views/SignupPage.vue"),
     meta: {
       redirectAleadyAuth: true,
     },
   },
   {
-    path: "/detail/:id",
-    name: "detail",
+    path: "/columnDetail/:id",
+    name: "columnDetail",
     component: () =>
       import(
         /* webpackChunkName: "test" */
         "@/views/ColumnDetailPage.vue"
+      ),
+  },
+  {
+    path: "/postDetail/:id",
+    name: "postDetail",
+    component: () =>
+      import(
+        /* webpackChunkName: "test" */
+        "@/views/PostDetailPage.vue"
       ),
   },
   {
@@ -44,6 +54,15 @@ const routes: RouteRecordRaw[] = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/createColumn",
+    name: "createColumn",
+    component: () => import("@/views/CreateColumnPage.vue"),
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
+  },
 ];
 const router = createRouter({
   history: createWebHistory(),
@@ -51,13 +70,33 @@ const router = createRouter({
 });
 
 //添加路由前置守卫
-router.beforeEach((to, _, next) => {
-  if (to.meta.requiresAuth && !store.state.user.isLogin) {
-    next("login");
-  } else if (to.meta.redirectAleadyAuth && store.state.user.isLogin) {
-    next("/");
+router.beforeEach((to, from, next) => {
+  const { isLogin, role } = store.state.user;
+  const { redirectAleadyAuth, requiresAuth, requiresAdmin } = to.meta;
+  if (isLogin) {
+    if (redirectAleadyAuth || (requiresAdmin && role !== "admin")) {
+      //登录状态下访问鉴权页面，跳转首页
+      next("/");
+    } else {
+      next();
+    }
   } else {
-    next();
+    //未登录状态，先获取用户信息
+    store.dispatch(FETCH_CURRENT_USER_ACTION).then(({ code, data }) => {
+      //后台返回用户信息
+      if (code === "0") {
+        if (redirectAleadyAuth || (requiresAdmin && data.role !== "admin")) {
+          //登录状态下访问鉴权页面，跳转首页
+          next("/");
+        } else {
+          next();
+        }
+      } else if (requiresAuth) {
+        next("login");
+      } else {
+        next();
+      }
+    });
   }
 });
 export default router;

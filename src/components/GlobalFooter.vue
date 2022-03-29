@@ -1,5 +1,5 @@
 <template>
-  <footer class="text-center py-4 text-secondary bg-light mt-6">
+  <footer class="text-center fixed-bottom text-secondary mt-6">
     <small>
       <ul class="list-inline mb-0">
         <li class="list-inline-item">@2022 Aurora专栏</li>

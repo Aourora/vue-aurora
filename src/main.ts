@@ -2,16 +2,22 @@ import axios from "axios";
 import { createApp } from "vue";
 import App from "./App.vue";
 import route from "./router";
+import interceptors from "./utils/intercepts";
 import store, { key } from "./store";
-import interceptors from "./utils/axios";
 
 axios.defaults.baseURL = "http://localhost:3000/";
 
-axios.get("public-key").then((resolve) => {
-  sessionStorage.setItem("pubkey", resolve.data.data);
-});
+//获取登录信息
+axios.interceptors.request.use(interceptors.interceptRequest(store));
 
-axios.interceptors.request.use(interceptors.interceptRequest);
-axios.interceptors.response.use(interceptors.interceptResponse);
+// store.dispatch(FETCH_CURRENT_USER_ACTION).finally(() => {
+//   store.commit(SET_LOADING, false);
+//   store.dispatch(FETCH_COLUMNS_ACTION).finally(() => {});
+// });
+
+axios.interceptors.response.use(
+  interceptors.interceptResponseFulfilled(store),
+  interceptors.interceptResponseRejected(store)
+);
 
 createApp(App).use(route).use(store, key).mount("#app");

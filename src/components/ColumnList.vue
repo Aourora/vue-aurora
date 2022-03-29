@@ -13,7 +13,7 @@
             {{ column.description }}
           </p>
           <router-link
-            :to="`/Detail/${column.id}`"
+            :to="`/columnDetail/${column.id}`"
             class="btn btn-outline-primary"
             >进入专栏</router-link
           >

@@ -3,8 +3,8 @@
     <input
       v-if="tag !== 'textarea'"
       class="form-control"
-      :class="{ 'is-invalid': inputRef.error }"
-      :value="inputRef.val"
+      :class="{ 'is-invalid': inputData.error }"
+      :value="inputData.val"
       @blur="validateInput"
       @input="updateValue"
       v-bind="$attrs"
@@ -12,64 +12,83 @@
     <textarea
       v-else
       class="form-control"
-      :class="{ 'is-invalid': inputRef.error }"
-      :value="inputRef.val"
+      :class="{ 'is-invalid': inputData.error }"
+      :value="inputData.val"
       @blur="validateInput"
       @input="updateValue"
       v-bind="$attrs"
     />
-    <span v-if="inputRef.error" class="invalid-feedback">{{
-      inputRef.message
+    <span v-if="inputData.error" class="invalid-feedback">{{
+      inputData.message
     }}</span>
   </div>
 </template>
 <script setup lang="ts">
 import emitter from "@/mitt";
-import { defineProps, defineEmits, onMounted, PropType, reactive } from "vue";
-
-import { ValidateType, VALIDATE_FUNC } from "../utils";
-
-export interface RuleProp {
-  type: ValidateType;
-  message: string;
-}
+import { validate } from "@/utils/function";
+import { RuleProps } from "@/utils/props";
+import {
+  defineProps,
+  defineEmits,
+  onMounted,
+  PropType,
+  reactive,
+  onUnmounted,
+} from "vue";
 
 const props = defineProps({
-  rules: Array as PropType<RuleProp[]>,
+  rules: Array as PropType<RuleProps[]>,
   modelValue: String,
   tag: { type: String as PropType<"input" | "textarea">, default: "input" },
+  isChange: Boolean,
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "format"]);
 
-const inputRef = reactive({
+const inputData = reactive({
   val: props.modelValue || "",
   error: false,
   message: "",
 });
 
-const updateValue = (e: Event) => {
-  const targetValue = (e.target as HTMLInputElement).value;
-  inputRef.val = targetValue;
-  emit("update:modelValue", targetValue);
+const changeInput = (value: string): void => {
+  inputData.val = value;
+  emit("update:modelValue", value);
 };
 
-const validateInput = () => {
-  if (!props.rules || !props.rules.length) return true;
+const updateValue = (e: Event): void => {
+  const targetValue = (e.target as HTMLInputElement).value;
+  changeInput(targetValue);
+};
 
-  inputRef.error = !props.rules.every((rule) => {
-    if (!VALIDATE_FUNC[rule.type](inputRef.val)) {
-      inputRef.message = rule.message;
+const validateInput = (): boolean => {
+  if (!props.rules || !props.rules.length) {
+    emit("format", true);
+    return true;
+  }
+
+  inputData.error = !props.rules.every((rule) => {
+    if (!validate(rule.type)(inputData.val)) {
+      inputData.message = rule.message;
       return false;
     }
     return true;
   });
-
-  return !inputRef.error;
+  emit("format", !inputData.error);
+  return !inputData.error;
 };
 
 onMounted(() => {
+  if (props.isChange) {
+    emitter.on("change-input-value", changeInput);
+  }
   emitter.emit("form-item-created", validateInput);
+});
+
+onUnmounted(() => {
+  if (props.isChange) {
+    emitter.off("change-input-value", changeInput);
+  }
 });
 </script>
 

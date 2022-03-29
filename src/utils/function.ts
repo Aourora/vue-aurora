@@ -1,6 +1,9 @@
 import jsencrypt from "jsencrypt";
 import { HmacSHA256 } from "crypto-js";
-import { HMACSHA256KEY } from "./constant";
+import { HMACSHA256KEY, VALIDATE_FUNC } from "./constant";
+import { CheckCondition, ErrorType, ResponseData, ValidateType } from "./props";
+import axios from "axios";
+import markdown from "markdown-it";
 
 export function stringify(
   value: unknown,
@@ -26,17 +29,16 @@ export function hashSHA256(params: unknown): string {
 
 const jsen = new jsencrypt();
 
-const pubkey = sessionStorage.getItem("pubkey") as string;
-
-jsen.setPublicKey(pubkey);
-
 /**
  * 分段加密
  * @param data
  * @param len
  * @returns
  */
-export function encryptData(data: unknown, len = 32): string | false {
+export async function encryptData(
+  data: unknown,
+  len = 32
+): Promise<string | false> {
   try {
     const str = JSON.stringify(data);
     const result = [];
@@ -48,12 +50,41 @@ export function encryptData(data: unknown, len = 32): string | false {
       const substr = str.substring(start, end);
       result.push(substr);
     }
-    return result
-      .map((item) => {
-        return jsen.encrypt(item);
-      })
-      .join(",");
+    const pubKey = (await axios.get<ResponseData<string>>("public-key")).data
+      .data;
+    jsen.setPublicKey(pubKey);
+
+    return Promise.resolve(
+      result
+        .map((item) => {
+          return jsen.encrypt(item);
+        })
+        .join(",")
+    );
   } catch (e) {
-    return false;
+    return Promise.resolve(false);
   }
+}
+
+export function validate(type: ValidateType): (value: string) => boolean {
+  return VALIDATE_FUNC[type];
+}
+
+export function beforeUploadCheck(
+  file: File,
+  condition?: CheckCondition
+): { passed: boolean; error?: ErrorType } {
+  const { format, size } = condition;
+  if (format && !format.includes(file.type)) {
+    return { passed: false, error: "format" };
+  }
+  if (size && file.size / 1024 / 1024 > size) {
+    return { passed: false, error: "size" };
+  }
+  return { passed: true };
+}
+
+const md = new markdown();
+export function render(data: string): string {
+  return md.render(data);
 }
