@@ -10,11 +10,6 @@ axios.defaults.baseURL = "http://139.224.33.149:3000/";
 //获取登录信息
 axios.interceptors.request.use(interceptors.interceptRequest(store));
 
-// store.dispatch(FETCH_CURRENT_USER_ACTION).finally(() => {
-//   store.commit(SET_LOADING, false);
-//   store.dispatch(FETCH_COLUMNS_ACTION).finally(() => {});
-// });
-
 axios.interceptors.response.use(
   interceptors.interceptResponseFulfilled(store),
   interceptors.interceptResponseRejected(store)

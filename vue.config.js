@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: "./",
+  publicPath: "/usr/share/nginx/html/",
 };
