@@ -49,12 +49,6 @@ jobs:
             rm -rf /home/aurora/vue
             mkdir -p /home/aurora/vue
          scp: |
-           './dist' => /home/aurora/vue
-           './Dockerfile' => /home/aurora/vue
+           './dist/' => /home/aurora/vue
          last_ssh: |
-            cd /home/aurora/vue
-            docker container stop vue
-            docker container rm vue
-            docker rmi aurora/vue
-            docker build -t aurora/vue .
-            docker run -d -p 80:80 --name="vue" --restart="on-failure" aurora/vue
+            docker restart vue
