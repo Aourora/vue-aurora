@@ -5,7 +5,7 @@ import route from "./router";
 import interceptors from "./utils/intercepts";
 import store, { key } from "./store";
 
-axios.defaults.baseURL = "http://localhost:3000/";
+axios.defaults.baseURL = "http://139.224.33.149:3000/";
 
 //获取登录信息
 axios.interceptors.request.use(interceptors.interceptRequest(store));
