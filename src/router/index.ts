@@ -63,6 +63,11 @@ const routes: RouteRecordRaw[] = [
       requiresAdmin: true,
     },
   },
+  {
+    path: "*",
+    name: "404",
+    component: () => import("@/views/CreateColumnPage.vue"),
+  },
 ];
 const router = createRouter({
   history: createWebHistory(),
