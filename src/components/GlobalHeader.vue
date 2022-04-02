@@ -1,51 +1,79 @@
 <template>
-  <nav class="navbar navbar-dark bg-primary justify-content-between px-4">
-    <router-link class="navbar-brand" to="/">Aurora专栏</router-link>
-    <ul v-if="!user.isLogin" class="list-inline mb-0">
-      <li class="list-inline-item">
-        <router-link to="/login" class="btn btn-outline-light my-2"
-          >登录</router-link
-        >
-      </li>
-      <li class="list-inline-item">
-        <router-link to="/register" class="btn btn-outline-light my-2"
-          >注册</router-link
-        >
-      </li>
-    </ul>
-    <ul v-else class="list-inline mb-0">
-      <li class="list-inline-item">
-        <drop-down :text="`你好 ${user.name}`">
-          <drop-down-item v-if="isAdmin"
-            ><li>
-              <router-link class="dropdown-item" to="/createColumn"
-                >新建专栏</router-link
-              >
-            </li></drop-down-item
+  <header>
+    <!-- Navbar -->
+    <MDBNavbar
+      class="header-container"
+      expand="lg"
+      dark
+      bg="dark"
+      container
+      position="sticky"
+    >
+      <MDBNavbarToggler target="#navbarExample01"></MDBNavbarToggler>
+      <MDBNavbarNav collapse="navbarExample01" class="mb-2 mb-lg-0">
+        <MDBNavbarItem to="/" active> 首页 </MDBNavbarItem>
+        <MDBNavbarItem to="#"> 游戏 </MDBNavbarItem>
+        <MDBNavbarItem to="#"> 算法 </MDBNavbarItem>
+        <MDBNavbarItem to="#"> 前端 </MDBNavbarItem>
+      </MDBNavbarNav>
+      <div class="d-flex w-50 justify-content-around">
+        <form class="d-flex input-group w-auto h-100 my-2">
+          <input
+            type="search"
+            class="form-control"
+            placeholder="查找文章"
+            aria-label="Search"
+          />
+          <MDBBtn color="light" outline="success"> Search </MDBBtn>
+        </form>
+        <div v-if="!user.isLogin" class="h-100 my-2">
+          <MDBBtn
+            @click="onLink('/login')"
+            color="light"
+            outline="success"
+            class="h-100"
           >
-          <drop-down-item
-            ><li>
-              <router-link class="dropdown-item" to="/createPost"
-                >新建文章</router-link
-              >
-            </li></drop-down-item
+            login
+          </MDBBtn>
+
+          <MDBBtn
+            @click="onLink('/signup')"
+            color="light"
+            outline="success"
+            class="me-2"
           >
-          <drop-down-item
-            ><li>
-              <a class="dropdown-item" href="#">修改资料</a>
-            </li></drop-down-item
-          >
-          <drop-down-item
-            ><li>
-              <a class="dropdown-item" @click.prevent="onLogout" href="#"
-                >退出登录</a
-              >
-            </li></drop-down-item
-          >
-        </drop-down>
-      </li>
-    </ul>
-  </nav>
+            sign up
+          </MDBBtn>
+        </div>
+        <MDBDropdown v-else class="nav-item" align="end" v-model="dropdown">
+          <MDBDropdownToggle
+            tag="a"
+            class="nav-link"
+            @click="dropdown = !dropdown"
+            ><img
+              src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp"
+              class="rounded-circle"
+              height="30"
+              alt=""
+              loading="lazy"
+            />
+          </MDBDropdownToggle>
+          <MDBDropdownMenu light class="text-center">
+            <MDBDropdownItem v-if="isAdmin" to="createColumn"
+              >新建专栏</MDBDropdownItem
+            >
+            <MDBDropdownItem to="createPost">新建文章</MDBDropdownItem>
+            <MDBDropdownItem tag="button">修改资料</MDBDropdownItem>
+            <MDBDropdownItem divider />
+            <MDBDropdownItem @click="onLogout" tag="button"
+              >退出登录</MDBDropdownItem
+            >
+          </MDBDropdownMenu>
+        </MDBDropdown>
+      </div>
+    </MDBNavbar>
+    <slot></slot>
+  </header>
 </template>
 
 <script setup lang="ts">
@@ -55,8 +83,19 @@ import { computed } from "@vue/reactivity";
 import { defineProps, PropType } from "vue";
 import { useRouter } from "vue-router";
 
-import DropDown from "./DropDown.vue";
-import DropDownItem from "./DropDownItem.vue";
+import {
+  MDBNavbar,
+  MDBNavbarToggler,
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBBtn,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
+} from "mdb-vue-ui-kit";
+
+import { ref } from "vue";
 
 export interface UserProps {
   isLogin: boolean;
@@ -69,7 +108,14 @@ defineProps({
 });
 
 const router = useRouter();
+
+const onLink = (url: string): void => {
+  router.push(url);
+};
+
 const store = useStore();
+
+const dropdown = ref(false);
 
 const isAdmin = computed(() => store.state.user.role === "admin");
 
@@ -79,3 +125,9 @@ const onLogout = () => {
   });
 };
 </script>
+
+<style>
+.header-container {
+  height: 80px;
+}
+</style>

@@ -1,14 +1,40 @@
 <template>
-  <footer class="text-center fixed-bottom text-secondary mt-6">
-    <small>
-      <ul class="list-inline mb-0">
-        <li class="list-inline-item">@2022 Aurora专栏</li>
-        <li class="list-inline-item">
-          <router-link to="/">首页</router-link>
-        </li>
-        <li class="list-inline-item">联系</li>
-        <li class="list-inline-item">更多</li>
-      </ul>
-    </small>
-  </footer>
+  <MDBFooter class="footer-container" bg="dark" :text="['center', 'white']">
+    <MDBContainer class="p-4 pb-0">
+      <section class="mb-4">
+        <MDBBtn tag="a" outline="light" href="#!" floating class="m-1">
+          <MDBIcon iconStyle="fab" icon="facebook-f"></MDBIcon>
+        </MDBBtn>
+        <MDBBtn tag="a" outline="light" href="#!" floating class="m-1">
+          <MDBIcon iconStyle="fab" icon="twitter"></MDBIcon>
+        </MDBBtn>
+        <MDBBtn tag="a" outline="light" href="#!" floating class="m-1">
+          <MDBIcon iconStyle="fab" icon="google"></MDBIcon>
+        </MDBBtn>
+        <MDBBtn tag="a" outline="light" href="#!" floating class="m-1">
+          <MDBIcon iconStyle="fab" icon="instagram"></MDBIcon>
+        </MDBBtn>
+        <MDBBtn tag="a" outline="light" href="#!" floating class="m-1">
+          <MDBIcon iconStyle="fab" icon="linkedin-in"></MDBIcon>
+        </MDBBtn>
+        <MDBBtn tag="a" outline="light" href="#!" floating class="m-1">
+          <MDBIcon iconStyle="fab" icon="github"></MDBIcon>
+        </MDBBtn>
+      </section>
+    </MDBContainer>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      © 2020 Copyright:
+      <a class="text-white" href="https://kaiking.ltd/">kaiking.ltd</a>
+    </div>
+    <!-- Copyright -->
+  </MDBFooter>
 </template>
+<script setup lang="ts">
+import { MDBFooter, MDBContainer, MDBBtn, MDBIcon } from "mdb-vue-ui-kit";
+</script>
+
+<style>
+.footer-container {
+  height: 152px;
+}
+</style>

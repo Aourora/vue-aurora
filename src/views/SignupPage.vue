@@ -1,60 +1,58 @@
 <template>
-  <div class="d-flex justify-content-center">
+  <BackgroundComponent>
     <validate-form @form-submit="onFormSubmit">
-      <div class="mb-3">
-        <label for="form-label">昵称</label>
-        <validate-input
-          :rules="nameRules"
-          v-model="formData.name"
-          type="text"
-          placeholder="请输入昵称"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="form-label">邮箱地址</label>
-        <validate-input
-          :rules="emailRules"
-          @format="formatCheck"
-          v-model="formData.email"
-          type="text"
-          placeholder="请输入邮箱地址"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="form-label">密码</label>
-        <validate-input
-          :rules="passwordRules"
-          type="password"
-          placeholder="请输入密码"
-          v-model="formData.password"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="form-label">验证码</label>
-        <ValidateInput
-          v-model="formData.authCode"
-          :rules="authCodeRules"
-          type="text"
-          placeholder="请输入验证码"
-        ></ValidateInput>
-        <button
-          @click.prevent="onGetAuthCode"
-          type="button"
-          class="btn btn-primary"
-          :disabled="formData.isRightEmail"
+      <validate-input
+        :rules="nameRules"
+        v-model="formData.name"
+        type="text"
+        label="请输入昵称"
+      />
+
+      <validate-input
+        :rules="emailRules"
+        @format="formatCheck"
+        v-model="formData.email"
+        type="text"
+        label="请输入邮箱地址"
+      />
+
+      <validate-input
+        :rules="passwordRules"
+        type="password"
+        label="请输入密码"
+        v-model="formData.password"
+      />
+      <MDBRow class="d-flex justify-content-between">
+        <MDBCol>
+          <ValidateInput
+            v-model="formData.authCode"
+            :rules="authCodeRules"
+            type="text"
+            label="请输入验证码"
+          ></ValidateInput>
+        </MDBCol>
+        <MDBCol>
+          <button
+            @click.prevent="onGetAuthCode"
+            type="button"
+            class="btn btn-primary"
+            :disabled="formData.isRightEmail"
+          >
+            获取验证码
+          </button></MDBCol
         >
-          获取验证码
-        </button>
-      </div>
+      </MDBRow>
+
       <template #submit>
-        <button type="submit" class="btn btn-primary">注册新用户</button>
+        <button type="submit" class="btn btn-primary w-100">注册新用户</button>
       </template>
     </validate-form>
-  </div>
+  </BackgroundComponent>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
+import { MDBRow, MDBCol } from "mdb-vue-ui-kit";
 
 import axios from "axios";
 import { reactive } from "vue";
@@ -70,6 +68,7 @@ import {
 } from "../utils/constant";
 import { ResponseData } from "@/utils/props";
 import useMessageInfo from "@/hooks/useMessageInfo";
+import BackgroundComponent from "@/components/BackgroundComponent.vue";
 
 const router = useRouter();
 

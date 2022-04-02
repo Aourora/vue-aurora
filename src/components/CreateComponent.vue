@@ -31,13 +31,14 @@ defineProps({
 });
 
 const uploadCheck = (file: File): boolean => {
+  console.log(file);
   const result = beforeUploadCheck(file, {
-    format: ["image/png", "image/jpeg"],
+    format: ["image/png", "image/jpeg", "image/webp"],
     size: 1,
   });
   if (!result.passed) {
     if (result.error === "format") {
-      useMessageInfo("error", "只能上传jpg/png格式图片!");
+      useMessageInfo("error", "只能上传jpg/png/webp格式图片!");
     } else {
       useMessageInfo("error", "上传图片大小不能超过 1Mb!");
     }

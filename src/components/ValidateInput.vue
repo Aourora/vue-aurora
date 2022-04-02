@@ -1,13 +1,14 @@
 <template>
   <div class="validate-input-container pb-3">
-    <input
+    <MDBInput
       v-if="tag !== 'textarea'"
-      class="form-control"
-      :class="{ 'is-invalid': inputData.error }"
+      wrapperClass="mb-4"
       :value="inputData.val"
       @blur="validateInput"
       @input="updateValue"
       v-bind="$attrs"
+      :class="{ 'is-invalid': inputData.error }"
+      :label="inputData.error ? inputData.message : label"
     />
     <textarea
       v-else
@@ -27,6 +28,7 @@
 import emitter from "@/mitt";
 import { validate } from "@/utils/function";
 import { RuleProps } from "@/utils/props";
+import { MDBInput } from "mdb-vue-ui-kit";
 import {
   defineProps,
   defineEmits,
@@ -41,6 +43,7 @@ const props = defineProps({
   modelValue: String,
   tag: { type: String as PropType<"input" | "textarea">, default: "input" },
   isChange: Boolean,
+  label: String,
 });
 
 const emit = defineEmits(["update:modelValue", "format"]);

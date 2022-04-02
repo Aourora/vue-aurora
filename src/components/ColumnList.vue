@@ -1,31 +1,35 @@
 <template>
-  <div class="row">
-    <div v-for="column in columnList" :key="column.id" class="col-4 mb-4">
-      <div class="card h-100 shadow-sm" style="width: 18rem">
-        <div class="card-body text-center">
-          <img
-            :src="column.avatar"
-            class="rounded-circle border border-light w-25 my-3"
-            :alt="column.title"
-          />
-          <h5 class="card-title">{{ column.title }}</h5>
-          <p class="card-text text-start">
+  <MDBRow :cols="['1', 'md-3']" class="g-4"
+    ><MDBCol v-for="column in columnList" :key="column.id">
+      <MDBCard @click="onClick(column.id)" class="card-container">
+        <MDBCardImg class="h-50" :src="column.avatar" top alt="..." />
+        <MDBCardBody style="background-color: blanchedalmond" class="h-50">
+          <MDBCardTitle>{{ column.title }}</MDBCardTitle>
+          <MDBCardText class="card-text-container">
             {{ column.description }}
-          </p>
-          <router-link
-            :to="`/columnDetail/${column.id}`"
-            class="btn btn-outline-primary"
-            >进入专栏</router-link
-          >
-        </div>
-      </div>
-    </div>
-  </div>
+          </MDBCardText>
+          <MDBCardText>
+            <small class="text-muted">Last updated 3 mins ago</small>
+          </MDBCardText>
+        </MDBCardBody>
+      </MDBCard>
+    </MDBCol>
+  </MDBRow>
 </template>
 
 <script setup lang="ts">
 import { ColumnProps } from "@/utils/props";
 import { computed, defineProps, PropType } from "vue";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardText,
+  MDBCardTitle,
+  MDBRow,
+  MDBCol,
+  MDBCardImg,
+} from "mdb-vue-ui-kit";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   list: {
@@ -42,4 +46,24 @@ const columnList = computed(() => {
     return cloumn;
   });
 });
+
+const router = useRouter();
+
+const onClick = (id: number): void => {
+  router.push(`/columnDetail/${id}`);
+};
 </script>
+
+<style>
+.card-container {
+  height: 600px;
+}
+.card-text-container {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100px;
+  -webkit-line-clamp: 8;
+  -webkit-box-orient: vertical;
+}
+</style>

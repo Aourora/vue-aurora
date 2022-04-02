@@ -1,4 +1,6 @@
-<template><ColumnList :list="columnList" /></template>
+<template>
+  <ColumnList :list="columnList" />
+</template>
 <script setup lang="ts">
 import ColumnList from "@/components/ColumnList.vue";
 import { useStore } from "@/store";

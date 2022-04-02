@@ -1,27 +1,28 @@
 <template>
-  <div class="container">
-    <global-header :user="userData" />
+  <MDBContainer fluid class="px-0" style="background-color: #9e9e9e">
     <loader-component v-if="isLoading" text="拼命加载中"></loader-component>
     <message-component
       v-if="message.status"
       :type="message.type"
       :message="message.message"
     ></message-component>
-    <router-view></router-view>
-    <global-footer></global-footer>
-  </div>
+    <global-header :user="userData">
+      <router-view class="mx-2 my-2 content-container"></router-view>
+      <global-footer></global-footer>
+    </global-header>
+  </MDBContainer>
 </template>
 
 <script setup lang="ts">
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import "mdb-vue-ui-kit/css/mdb.min.css";
 import GlobalHeader from "./components/GlobalHeader.vue";
-
 import GlobalFooter from "./components/GlobalFooter.vue";
 import { useStore } from "./store";
 import { computed } from "vue";
 import LoaderComponent from "./components/LoaderComponent.vue";
 import MessageComponent from "./components/MessageComponent.vue";
+
+import { MDBContainer } from "mdb-vue-ui-kit";
 
 const store = useStore();
 
@@ -41,3 +42,9 @@ const userData = computed(() => store.state.user);
   background-attachment: fixed; /* 当内容高度大于图片高度时，背景图像的位置相对于 可视窗口 固定，此条属性必须设置 */
 }
 </style> -->
+
+<style>
+.content-container {
+  min-height: calc(100vh - 232px);
+}
+</style>

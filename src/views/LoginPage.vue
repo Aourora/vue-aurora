@@ -1,29 +1,26 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center">
-    <validate-form @form-submit="onFormSubmit">
-      <div class="mb-3">
-        <label for="form-label">邮箱地址</label>
+  <background-component>
+    <div class="">
+      <validate-form @form-submit="onFormSubmit">
         <validate-input
           :rules="emailRules"
           v-model="email"
           type="text"
-          placeholder="请输入邮箱地址"
+          label="请输入邮箱地址"
         />
-      </div>
-      <div class="mb-3">
-        <label for="form-label">密码</label>
+
         <validate-input
           :rules="passwordRules"
           type="password"
-          placeholder="请输入密码"
+          label="请输入密码"
           v-model="password"
         />
-      </div>
-      <template #submit>
-        <button type="submit" class="btn btn-primary">登录</button>
-      </template>
-    </validate-form>
-  </div>
+        <template #submit>
+          <button type="submit" class="btn btn-primary w-100">登录</button>
+        </template>
+      </validate-form>
+    </div>
+  </background-component>
 </template>
 
 <script setup lang="ts">
@@ -38,6 +35,7 @@ import ValidateForm from "../components/ValidateForm.vue";
 import ValidateInput from "@/components/ValidateInput.vue";
 import { emailRules, passwordRules } from "../utils/constant";
 import useMessageInfo from "@/hooks/useMessageInfo";
+import BackgroundComponent from "@/components/BackgroundComponent.vue";
 
 const store = useStore();
 const router = useRouter();
@@ -63,3 +61,5 @@ const onFormSubmit = async (format: boolean) => {
   }
 };
 </script>
+
+<style></style>

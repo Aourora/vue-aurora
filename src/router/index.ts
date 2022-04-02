@@ -17,8 +17,8 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/register",
-    name: "register",
+    path: "/signup",
+    name: "signup",
     component: () => import("@/views/SignupPage.vue"),
     meta: {
       redirectAleadyAuth: true,
@@ -64,9 +64,9 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "*",
+    path: "/1",
     name: "404",
-    component: () => import("@/views/CreateColumnPage.vue"),
+    component: () => import("@/views/HomePage.vue"),
   },
 ];
 const router = createRouter({
