@@ -2,14 +2,11 @@
   <MDBRow :cols="['1', 'md-3']" class="g-4"
     ><MDBCol v-for="column in columnList" :key="column.id">
       <MDBCard @click="onClick(column.id)" class="card-container">
-        <MDBCardImg class="h-50" :src="column.avatar" top alt="..." />
-        <MDBCardBody style="background-color: blanchedalmond" class="h-50">
+        <MDBCardImg :src="column.avatar" class="h-50" top alt="..." />
+        <MDBCardBody style="background-color: #bdbdbd" class="h-50">
           <MDBCardTitle>{{ column.title }}</MDBCardTitle>
           <MDBCardText class="card-text-container">
             {{ column.description }}
-          </MDBCardText>
-          <MDBCardText>
-            <small class="text-muted">Last updated 3 mins ago</small>
           </MDBCardText>
         </MDBCardBody>
       </MDBCard>

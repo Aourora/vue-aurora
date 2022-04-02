@@ -1,26 +1,39 @@
 <template>
-  <div class="post-list">
-    <article
-      v-for="post in list"
-      :key="post.id"
-      class="card mb-3"
-      @click.prevent="onClick(post.id)"
-    >
-      <div class="card-body">
-        <h4>{{ post.title }}</h4>
-        <div class="row my-3 algin-items-center">
-          <div v-if="post.image" class="col-3">
-            <img :src="post.image" :alt="post.title" class="rounded-lg" />
-          </div>
-          <p :class="{ 'col-9': post.image }">{{ post.excerpt }}</p>
-        </div>
-        <span class="text-muted">{{ post.createdAt }}</span>
-      </div>
-    </article>
-  </div>
+  <MDBCard
+    v-for="post in list"
+    :key="post.id"
+    @click="onClick(post.id)"
+    class="mb-6"
+  >
+    <MDBRow class="g-0">
+      <MDBCol md="4">
+        <MDBCardImg class="img-fluid rounded" :src="post.image" alt="..." />
+      </MDBCol>
+      <MDBCol md="8">
+        <MDBCardBody>
+          <MDBCardTitle> {{ post.title }}</MDBCardTitle>
+          <MDBCardText>
+            {{ post.excerpt }}
+          </MDBCardText>
+          <MDBCardText>
+            <small class="text-muted"> {{ post.createdAt }}</small>
+          </MDBCardText>
+        </MDBCardBody>
+      </MDBCol>
+    </MDBRow>
+  </MDBCard>
 </template>
 
 <script setup lang="ts">
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCardText,
+  MDBCardTitle,
+  MDBRow,
+  MDBCol,
+  MDBCardImg,
+} from "mdb-vue-ui-kit";
 import { PostProps } from "@/utils/props";
 import { defineProps, PropType } from "vue";
 import { useRouter } from "vue-router";

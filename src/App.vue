@@ -1,5 +1,5 @@
 <template>
-  <MDBContainer fluid class="px-0" style="background-color: #9e9e9e">
+  <MDBContainer fluid class="px-0" style="background-color: #e0e0e0">
     <loader-component v-if="isLoading" text="拼命加载中"></loader-component>
     <message-component
       v-if="message.status"

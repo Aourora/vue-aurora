@@ -1,5 +1,5 @@
 <template>
-  <div class="post-detail-page">
+  <div class="post-detail-page w-75 mx-auto">
     <article>
       <img v-if="post.image" :src="post.image" class="my-4" />
       <h2 class="text-center">{{ post.title }}</h2>
@@ -24,7 +24,6 @@ const content = computed(() => render(props.post.content));
 
 <style>
 .post-detail-page img {
-  height: 200px;
   width: 100%;
   object-fit: cover;
 }
