@@ -12,7 +12,7 @@
       <MDBNavbarToggler target="#navbarExample01"></MDBNavbarToggler>
       <MDBNavbarNav collapse="navbarExample01" class="mb-2 mb-lg-0">
         <MDBNavbarItem to="/" active> 首页 </MDBNavbarItem>
-        <MDBNavbarItem to="#"> 游戏 </MDBNavbarItem>
+        <MDBNavbarItem to="/game"> 游戏 </MDBNavbarItem>
         <MDBNavbarItem to="#"> 算法 </MDBNavbarItem>
         <MDBNavbarItem to="#"> 前端 </MDBNavbarItem>
       </MDBNavbarNav>

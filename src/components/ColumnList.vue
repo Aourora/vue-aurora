@@ -1,5 +1,5 @@
 <template>
-  <MDBRow :cols="['1', 'md-3']" class="g-4"
+  <MDBRow :cols="['1', 'md-3']" class="g-4 mx-2 my-2"
     ><MDBCol v-for="column in columnList" :key="column.id">
       <MDBCard @click="onClick(column.id)" class="card-container">
         <MDBCardImg :src="column.avatar" class="h-50" top alt="..." />

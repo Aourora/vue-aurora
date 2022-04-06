@@ -64,9 +64,14 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/1",
-    name: "404",
-    component: () => import("@/views/HomePage.vue"),
+    path: "/game",
+    name: "game",
+    component: () => import("@/views/GamePage.vue"),
+  },
+  {
+    path: "/:catchAll(.*)",
+    name: "notFound",
+    component: () => import("@/views/NotFoundPage.vue"),
   },
 ];
 const router = createRouter({

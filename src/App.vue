@@ -1,13 +1,13 @@
 <template>
   <MDBContainer fluid class="px-0" style="background-color: #e0e0e0">
-    <loader-component v-if="isLoading" text="拼命加载中"></loader-component>
+    <!-- <loader-component v-if="isLoading" text="拼命加载中"></loader-component> -->
     <message-component
       v-if="message.status"
       :type="message.type"
       :message="message.message"
     ></message-component>
     <global-header :user="userData">
-      <router-view class="mx-2 my-2 content-container"></router-view>
+      <router-view class="content-container"></router-view>
       <global-footer></global-footer>
     </global-header>
   </MDBContainer>
@@ -19,14 +19,14 @@ import GlobalHeader from "./components/GlobalHeader.vue";
 import GlobalFooter from "./components/GlobalFooter.vue";
 import { useStore } from "./store";
 import { computed } from "vue";
-import LoaderComponent from "./components/LoaderComponent.vue";
+// import LoaderComponent from "./components/LoaderComponent.vue";
 import MessageComponent from "./components/MessageComponent.vue";
 
 import { MDBContainer } from "mdb-vue-ui-kit";
 
 const store = useStore();
 
-const isLoading = computed(() => store.state.loading);
+// const isLoading = computed(() => store.state.loading);
 
 const message = computed(() => store.state.message);
 
